@@ -1,0 +1,15 @@
+device1:
+  hide_if_away: false
+  icon:
+  mac: XXXXX:XX:XX:XX:XX:XX
+  name: Marco
+  picture:
+  track: true
+
+device2:
+  hide_if_away: false
+  icon:
+  mac: XXXXX:XX:XX:XX:XX:XX
+  name: Ary
+  picture:
+  track: true

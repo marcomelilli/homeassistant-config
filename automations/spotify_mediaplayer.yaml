@@ -1,0 +1,22 @@
+- id: '1537906548089'
+  alias: Cube Spotify - change Track
+  trigger:
+  - event_data:
+      action_type: rotate
+      entity_id: binary_sensor.cube_158d000103a838
+    event_type: cube_action
+    platform: event
+  action:
+  - service_template: '{% if trigger.event.data.action_value|float > 16 %} media_player.media_next_track  {%
+      elif trigger.event.data.action_value|float < -16 %} media_player.media_previous_track
+      {% endif %}'
+- id: '1537906548090'
+  alias: Cube Spotify - play-pause
+  trigger:
+  - event_data:
+      action_type: tap_twice
+      entity_id: binary_sensor.cube_158d000103a838
+    event_type: cube_action
+    platform: event
+  action:
+  - service: media_player.media_play_pause

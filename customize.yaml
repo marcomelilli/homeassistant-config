@@ -1,0 +1,8 @@
+sensor.epson_wf2510_black:
+    entity_picture: /local/icons/ink_k.png
+sensor.epson_wf2510_cyan:
+    entity_picture: /local/icons/ink_c.png
+sensor.epson_wf2510_magenta:
+    entity_picture: /local/icons/ink_m.png
+sensor.epson_wf2510_yellow:
+    entity_picture: /local/icons/ink_y.png

@@ -1,0 +1,5 @@
+- platform: xiaomi_miio
+  name: Xiaomi Power Strip
+  host: !secret xiaomi_miio_host
+  token: !secret xiaomi_miio_token
+  model: zimi.powerstrip.v2

@@ -1,0 +1,28 @@
+esphomeyaml:
+  name: sensor
+  platform: ESP8266
+  board: nodemcuv2
+
+wifi:
+  ssid: 'XXXXX'
+  password: 'XXXXXX'
+
+mqtt:
+  broker: 'XXXXX'
+  username: 'XXXXX'
+  password: 'XXXXXXX'
+
+# Enable logging
+logger:
+
+ota:
+
+sensor:
+  - platform: dht
+    pin: D2
+    model: DHT11
+    temperature:
+      name: "Temperature"
+    humidity:
+      name: "Humidity"
+    update_interval: 300s

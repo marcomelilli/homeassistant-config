@@ -1,0 +1,75 @@
+homeassistant:
+  name: Home
+  latitude: XX.XXX
+  longitude: X.XXX
+  elevation: 0
+  unit_system: metric
+  time_zone: Europe/Rome
+  customize: !include customize.yaml
+
+frontend:
+
+config:
+
+panel_iframe:
+  configurator:
+    title: Configurator
+    icon: mdi:wrench
+    url: http://192.168.1.XXX:3218
+  terminal:
+    title: Terminal
+    icon: mdi:application
+    url: http://192.168.1.XXX:7681
+  esp:
+    title: Esp Config
+    icon: mdi:application
+    url: http://192.168.1.XXX:6052
+
+http:
+  base_url: !secret http_base_url
+
+updater:
+  include_used_components: true
+
+logger:
+  default: info
+
+discovery:
+
+device_tracker:
+  - platform: bluetooth_tracker
+
+history:
+
+logbook:
+
+sun:
+
+xiaomi_aqara:
+  discovery_retry: 5
+  gateways:
+    - key: !secret xiaomi_aqara_key
+
+ffmpeg:
+  ffmpeg_bin: /usr/bin/ffmpeg
+
+camera:
+  - platform: ffmpeg
+    name: camera
+    input: !secret camera_url
+
+telegram_bot:
+  - platform: polling
+    api_key: !secret telegram_bot_apy_key
+    allowed_chat_ids:
+      - !secret telegram_bot_chat_id
+
+group: !include groups.yaml
+sensor: !include_dir_merge_list components/sensors
+switch: !include_dir_merge_list components/switches
+
+media_player: !include_dir_merge_list components/media_players
+notify: !include_dir_merge_list components/notify
+
+automation: !include_dir_merge_list automations/
+script: !include scripts.yaml

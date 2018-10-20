@@ -1,0 +1,16 @@
+- id: '1537905242338'
+  alias: Apertura Porta
+  trigger:
+  - entity_id: binary_sensor.door_window_sensor_158d0001fa3516
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: binary_sensor.motion_sensor_158d0001ae8bfa
+    state: 'off'
+  action:
+  - service: switch.turn_on
+  - data:
+      message: Home door opened
+    service: telegram_bot.send_message

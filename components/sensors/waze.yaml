@@ -1,0 +1,5 @@
+- platform: waze_travel_time
+  name: "Time home-work"
+  origin: XX.XXX, XX.XXX
+  destination: XX.XXX, XX.XXX
+  region: 'EU'
