@@ -3,12 +3,6 @@
   name: Epson WF-2510 Black
   unit_of_measurement: '%'
   scan_interval: 1800
-  value_tamplate: >-
-    {% if value %}
-      {{value}}
-    {% else %}
-      #{{sensor.epson_wf2510_black}}
-    {% endif %}
 - platform: command_line
   command: curl http://192.168.1.104/PRESENTATION/HTML/TOP/INDEX.HTML | awk '/Ink_Y.PNG/ {print $4}' | awk -F "'" '{printf "%.0f\n",  $2/50*100;}'
   name: Epson WF-2510 Yellow

@@ -9,8 +9,11 @@ views:
       - type: entities
         title: Luci
         entities:
-          - light.gateway_light_34ce00859e4a
-          - switch.xiaomi_power_strip
+          - entity: light.gateway_light_34ce00859e4a
+            name: Cucina
+          - entity: switch.xiaomi_power_strip
+            name: Soggiorno
+            icon: mdi:lightbulb
           
       - type: picture-glance
         title: Camera
@@ -43,6 +46,19 @@ views:
             graph: line
             type: sensor
 
+      - type: sensor
+        entity:  sensor.tempo_casalavoro
+        unit_of_measurement: 'MB'
+        title: Memory Free
+
+      - type: glance
+        title: Casa
+        entities:
+          - entity: device_tracker.g6
+            name: Marco
+          - entity: device_tracker.mi_a2
+            name: Ary
+
       - type: glance
         title: Epson WF-2510
         entities:
@@ -54,10 +70,7 @@ views:
             name: Cyan
           - entity: sensor.epson_wf2510_yellow
             name: Yellow
-            
-      - type: media-control
-        entity: media_player.spotify
-        
+
   - title: Raspberry
     cards:
       - type: horizontal-stack
@@ -86,14 +99,17 @@ views:
         cards:
           - type: sensor
             entity: sensor.speedtest_download
+            name: Download
             unit_of_measurement: 'MB'
             title: Download
           - type: sensor
             entity: sensor.speedtest_upload
+            name: Upload
             unit_of_measurement: 'MB'
             title: Upload
           - type: sensor
             entity: sensor.speedtest_ping
+            name: Ping
             unit_of_measurement: 'MB'
             title: Ping
 
@@ -106,5 +122,5 @@ views:
           - automation.cube_spotify__change_track
           - automation.cube_spotify__playpause
           - automation.telegram_help
-          - automation.telegram
+          - automation.telegram_turn_on_light
                     
