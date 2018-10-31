@@ -1,7 +1,7 @@
 homeassistant:
   name: Home
-  latitude: XX.XXX
-  longitude: X.XXX
+  latitude: !secret home_lat
+  longitude: !secret home_lon
   elevation: 0
   unit_system: metric
   time_zone: Europe/Rome
@@ -15,11 +15,11 @@ panel_iframe:
   configurator:
     title: Configurator
     icon: mdi:wrench
-    url: http://192.168.1.XXX:3218
+    url: https://192.168.1.XXX:3218
   terminal:
     title: Terminal
     icon: mdi:application
-    url: http://192.168.1.XXX:7681
+    url: https://192.168.1.XXX:7681
   esp:
     title: Esp Config
     icon: mdi:application
@@ -27,6 +27,9 @@ panel_iframe:
 
 http:
   base_url: !secret http_base_url
+  ssl_profile: intermediate
+  ssl_certificate: /ssl/fullchain.pem
+  ssl_key: /ssl/privkey.pem
 
 updater:
   include_used_components: true
@@ -34,16 +37,27 @@ updater:
 logger:
   default: info
 
-discovery:
-
 device_tracker:
   - platform: bluetooth_tracker
+    interval_seconds: 60
+    new_device_defaults:
+      track_new_devices: False
 
 history:
 
 logbook:
 
 sun:
+
+discovery:
+
+mqtt:
+  broker: core-mosquitto
+  username: mosquitto_username
+  password: mosquitto_password
+
+tts:
+  - platform: google
 
 xiaomi_aqara:
   discovery_retry: 5
@@ -59,10 +73,28 @@ camera:
     input: !secret camera_url
 
 telegram_bot:
-  - platform: polling
+  - platform: webhooks
     api_key: !secret telegram_bot_apy_key
+    parse_mode: html
     allowed_chat_ids:
       - !secret telegram_bot_chat_id
+
+input_select:
+  waze_orig:
+    name: Partenza
+    options:
+      - Casa
+      - Lavoro
+  waze_dest:
+    name: Arrivo
+    options:
+      - Casa
+      - Lavoro
+      
+weather:
+  - platform: darksky
+    api_key: !secret darksky_api
+
 
 group: !include groups.yaml
 sensor: !include_dir_merge_list components/sensors

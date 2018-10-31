@@ -1,5 +1,29 @@
 - platform: waze_travel_time
-  name: "Time home-work"
-  origin: XX.XXX, XX.XXX
-  destination: XX.XXX, XX.XXX
+  name: "travel time"
+  origin: sensor.waze_orig
+  destination: sensor.waze_dest
   region: 'EU'
+  
+- platform: template
+  sensors:
+     waze_dest:
+       value_template: >-
+          {%- if is_state("input_select.waze_dest", "Casa")  -%}
+            !secret home_coords
+          {%- elif is_state("input_select.waze_dest", "Lavoro")  -%}
+            !secret work_coords
+          {%- else -%}
+            Unknown
+          {%- endif %}
+          
+- platform: template
+  sensors:
+     waze_orig:
+       value_template: >-
+          {%- if is_state("input_select.waze_orig", "Casa")  -%}
+            !secret home_coords
+          {%- elif is_state("input_select.waze_orig", "Lavoro")  -%}
+            !secret work_coords
+          {%- else -%}
+            Unknown
+          {%- endif %}
