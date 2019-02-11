@@ -1,0 +1,38 @@
+- alias: Good Morning Alarm
+  trigger:
+    platform: template
+    value_template: "{{states('sensor.time') == ((((states.input_number.alarm_hour.state | int) * 60 * 60 ) + ((states.input_number.alarm_minute.state | int) * 60))) | int | timestamp_custom('%H:%M', False)}}"
+  condition:
+    - condition: time
+      weekday:
+      - mon
+      - tue
+      - wed
+      - thu
+      - fri
+    - condition: state
+      entity_id: input_boolean.alarm_weekday
+      state: 'on'
+  action:
+  - data:
+      transition: 300
+      brightness_pct: 100
+      entity_id: light.living_room
+    service: light.turn_on
+  - service: media_player.volume_set
+    data_template:
+      entity_id: media_player.spotify
+      volume_level: 0.5
+  - delay: 1
+  - service: media_player.turn_on
+    entity_id: media_player.spotify
+  - delay: 1
+  - data:
+      entity_id: media_player.spotify
+      source: Hass.io
+    service: media_player.select_source
+  - data:
+      entity_id: media_player.spotify
+      media_content_id: spotify:user:spotify:playlist:7g14mknoMzxzPcOyawOUgn
+      media_content_type: playlist
+    service: media_player.play_media

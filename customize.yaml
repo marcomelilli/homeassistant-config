@@ -1,8 +1,18 @@
-sensor.epson_wf2510_black:
-    entity_picture: /local/icons/ink_k.png
-sensor.epson_wf2510_cyan:
-    entity_picture: /local/icons/ink_c.png
-sensor.epson_wf2510_magenta:
-    entity_picture: /local/icons/ink_m.png
-sensor.epson_wf2510_yellow:
-    entity_picture: /local/icons/ink_y.png
+sensor.epson_wf_2510_black:
+  entity_picture: /local/icons/ink_k.png
+sensor.epson_wf_2510_cyan:
+  entity_picture: /local/icons/ink_c.png
+sensor.epson_wf_2510_magenta:
+  entity_picture: /local/icons/ink_m.png
+sensor.epson_wf_2510_yellow:
+  entity_picture: /local/icons/ink_y.png
+binary_sensor.door_window_sensor_158d0001fa3516:
+  icon: mdi:door
+sensor.temperature:
+  icon: mdi:thermometer
+sensor.humidity:
+  icon: mdi:water-percent
+light.xiaomi_power_strip:
+  icon: mdi:floor-lamp
+camera.camera:
+  icon: mdi:cctv

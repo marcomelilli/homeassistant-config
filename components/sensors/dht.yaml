@@ -1,6 +1,10 @@
-- platform: dht
-  sensor: DHT11
-  pin: 23
-  monitored_conditions:
-    - temperature
-    - humidity
+- platform: mqtt
+  name: 'Temperature'
+  state_topic: 'tele/thermostat/SENSOR'
+  unit_of_measurement: 'C'
+  value_template: '{{ value_json.DHT11.Temperature }}'
+- platform: mqtt
+  name: Humidity
+  state_topic: 'tele/thermostat/SENSOR'
+  unit_of_measurement: '%'
+  value_template: '{{ value_json.DHT11.Humidity }}'

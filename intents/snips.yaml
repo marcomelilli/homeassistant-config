@@ -1,0 +1,136 @@
+TurnOn:
+ action:
+   service: light.turn_on
+   data_template: 
+     transition: 1
+     brightness_pct: > 
+         {{ brightness|default('100') | float  }}
+     entity_id: > 
+       {%- if room.lower() in ['soggiorno'] -%}
+         light.xiaomi_power_strip
+       {%- elif room.lower() in ['corridoio'] -%}
+         light.living_room
+       {%- endif -%}
+ speech:
+   type: plain
+   text: OK, i turned on the light in {{ room }}
+
+TurnOff:
+  action:
+    - service: light.turn_off
+      data_template:
+        entity_id: > 
+          {%- if room.lower() in ['soggiorno'] -%}
+            light.xiaomi_power_strip
+          {%- elif room.lower() in ['corridoio'] -%}
+            light.living_room
+          {%- endif -%}
+  speech:
+    type: plain
+    text: OK, i turned off the light in {{ room }}
+
+SetMode:
+  action:
+    service: scene.turn_on
+    data_template:
+      entity_id: > 
+        {%- if room.lower() in ['corridoio'] and mode.lower() in ['normale'] -%}
+          scene.corridoio_normal
+        {%- elif room.lower() in ['corridoio'] and mode.lower() in ['relax'] -%}
+          scene.corridoio_moonlight
+        {%- endif -%}
+  speech:
+    type: plain
+    text: OK, I set light in {{ room }} on {{ mode }} mode
+    
+Goodnight:
+  action:
+    service: scene.turn_on
+    data_template:
+      entity_id: scene.goodnight
+  speech:
+    type: plain
+    text: Goodnight Marco
+
+Goodmorning:
+  action:
+    service: scene.turn_on
+    data_template:
+      entity_id: scene.goodmorning
+  speech:
+    type: plain
+    text: Goodmorning Marco
+
+Hello:
+  action:
+    service: scene.turn_on
+    data_template:
+      entity_id: scene.hello
+  speech:
+    type: plain
+    text: Hello Marco
+    
+Bye:
+  action:
+    service: scene.turn_on
+    data_template:
+      entity_id: scene.bye
+  speech:
+    type: plain
+    text: See you soon Marco
+    
+playPlaylist:
+  action:
+  - service: media_player.turn_on
+    entity_id: media_player.spotify
+  - delay: 1
+  - service: media_player.select_source
+    data_template:
+      entity_id: media_player.spotify
+      source: > 
+        {%- if media_player in ['homeassistant'] -%}
+          Hass.io
+        {%- elif media_player in ['smartphone'] -%}
+          G6
+        {%- else -%}
+          Hass.io
+        {%- endif -%}
+  - service: media_player.play_media
+    data_template:
+      entity_id: media_player.spotify
+      media_content_type: playlist
+      media_content_id: > 
+        {%- if playlist_name.lower() in ['preferita'] -%}
+          spotify:user:spotify:playlist:7g14mknoMzxzPcOyawOUgn
+        {%- elif playlist_name.lower() in ['top di oggi'] -%}
+          spotify:user:spotify:playlist:37i9dQZF1DXcBWIGoYBM5M
+        {%- elif playlist_name.lower() in ['top italia'] -%}
+          spotify:user:spotify:playlist:37i9dQZF1DX6wfQutivYYr
+        {%- elif playlist_name.lower() in ['top mondo'] -%}
+          spotify:user:spotify:playlist:37i9dQZEVXbMDoHDwVN2tF
+        {%- else -%}
+          spotify:user:spotify:playlist:37i9dQZF1DXcBWIGoYBM5M
+        {%- endif -%}
+  speech:
+    type: plain
+    text: OK, i'm playing the playlist {{ playlist_name }} on {{ media_player }}
+
+stopSpeaker:
+  action:
+  - service: media_player.media_pause
+    entity_id: media_player.spotify
+
+resumeMusic:
+  action:
+  - service: media_player.media_play
+    entity_id: media_player.spotify
+
+nextSong:
+  action:
+  - service: media_player.media_next_track
+    entity_id: media_player.spotify
+
+previousSong:
+  action:
+  - service: media_player.media_previous_track
+    entity_id: media_player.spotify

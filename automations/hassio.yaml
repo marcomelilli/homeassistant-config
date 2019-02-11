@@ -1,0 +1,18 @@
+- id: '1544741537739'
+  alias: Hassio Restart
+  trigger:
+  - event: start
+    platform: homeassistant
+  condition: []
+  action:
+  - alias: ''
+    data: { "message": "HomeAssistant è pronto" }
+    service: telegram_bot.send_message
+- alias: Hassio Update notifications
+  trigger:
+    - platform: state
+      entity_id: updater.updater
+  action:
+  - alias: ''
+    data: { "message": "E' disponibile un nuovo aggiornamento di HomeAssistant!" }
+    service: telegram_bot.send_message

@@ -1,0 +1,26 @@
+- name: corridoio_normal
+  entities:
+    light.living_room:
+      state: true
+      rgb_color: [255, 244, 229]
+- name: corridoio_moonlight
+  entities:
+    light.living_room:
+      state: true
+      rgb_color: [255, 147, 41]
+- name: goodnight
+  entities:
+    light.living_room: false
+    light.xiaomi_power_strip: false
+- name: goodmorning
+  entities:
+    light.xiaomi_power_strip:
+      state: true
+- name: hello
+  entities:
+    light.xiaomi_power_strip:
+      state: true
+- name: bye
+  entities:
+    light.living_room: false
+    light.xiaomi_power_strip: false

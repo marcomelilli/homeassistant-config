@@ -1,0 +1,3 @@
+- platform: switch
+  name: Xiaomi Power Strip
+  entity_id: switch.xiaomi_power_strip

@@ -9,7 +9,17 @@ homeassistant:
 
 frontend:
 
+updater:
+
 config:
+
+hassio:
+
+system_health:
+
+tts:
+  - platform: picotts
+    language: 'it-IT'
 
 panel_iframe:
   configurator:
@@ -24,6 +34,10 @@ panel_iframe:
     title: Esp Config
     icon: mdi:application
     url: http://192.168.1.XXX:6052
+  tasmota:
+    title: Tasmo Admin
+    icon: mdi:application
+    url: http://192.168.1.XXX:9541
 
 http:
   base_url: !secret http_base_url
@@ -31,33 +45,20 @@ http:
   ssl_certificate: /ssl/fullchain.pem
   ssl_key: /ssl/privkey.pem
 
-updater:
-  include_used_components: true
-
 logger:
   default: info
 
-device_tracker:
-  - platform: bluetooth_tracker
-    interval_seconds: 60
-    new_device_defaults:
-      track_new_devices: False
+#device_tracker:
+#  - platform: bluetooth_tracker
+#    interval_seconds: 60
+#    new_device_defaults:
+#      track_new_devices: False
 
 history:
 
 logbook:
 
 sun:
-
-discovery:
-
-mqtt:
-  broker: core-mosquitto
-  username: mosquitto_username
-  password: mosquitto_password
-
-tts:
-  - platform: google
 
 xiaomi_aqara:
   discovery_retry: 5
@@ -73,35 +74,66 @@ camera:
     input: !secret camera_url
 
 telegram_bot:
-  - platform: webhooks
+  - platform: polling
     api_key: !secret telegram_bot_apy_key
     parse_mode: html
     allowed_chat_ids:
       - !secret telegram_bot_chat_id
 
-input_select:
-  waze_orig:
-    name: Partenza
-    options:
-      - Casa
-      - Lavoro
-  waze_dest:
-    name: Arrivo
-    options:
-      - Casa
-      - Lavoro
-      
+input_text:
+  wunderlist_groceries:
+    name: Aggiungi a Lista Spesa
+
+input_boolean:
+  alarm_weekday:
+    name: Sveglia
+    initial: on
+    icon: mdi:timer
+ 
+input_number:
+  alarm_hour:
+    name: alarm_hour
+    icon: mdi:clock-start
+    initial: 7
+    min: 0
+    max: 24
+    step: 1
+  alarm_minute:
+    name: alarm_minute
+    icon: mdi:clock-start
+    initial: 0
+    min: 0
+    max: 60
+    step: 5
+          
 weather:
   - platform: darksky
     api_key: !secret darksky_api
+    mode: daily
+    name: Meteo
 
+wunderlist:
+  client_id: !secret wunderlist_client_id
+  access_token: !secret wunderlist_access_token
+
+climate:
+  - platform: generic_thermostat
+    name: air_conditioner_thermostat
+    heater: switch.air_conditioner
+    target_sensor: sensor.temperature
+    ac_mode: true
+
+snips:
 
 group: !include groups.yaml
 sensor: !include_dir_merge_list components/sensors
 switch: !include_dir_merge_list components/switches
+light: !include_dir_merge_list components/lights
 
 media_player: !include_dir_merge_list components/media_players
 notify: !include_dir_merge_list components/notify
 
+intent_script: !include intents/snips.yaml
+scene: !include scenes.yaml
 automation: !include_dir_merge_list automations/
 script: !include scripts.yaml

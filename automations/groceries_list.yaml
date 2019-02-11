@@ -1,0 +1,13 @@
+- alias: Update Travel Destination options
+  trigger:
+    - platform: state
+      entity_id: input_text.wunderlist_groceries
+  action:
+    - service: wunderlist.create_task
+      data_template:
+        list_name: Groceries
+        name: '{{states("input_text.wunderlist_groceries")}}'
+    - service: input_text.set_value
+      data:
+        entity: input_text.wunderlist_groceries
+        value: ''

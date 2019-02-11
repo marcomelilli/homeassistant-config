@@ -1,5 +1,4 @@
-- id: '1538139090311'
-  alias: Telegram Turn On light 
+- alias: Telegram Turn On light 
   trigger:
   - event_data:
       command: /luce
@@ -18,18 +17,16 @@
       callback_query_id: '{{ trigger.event.data.id }}'
       message: Azione Completata
     service: telegram_bot.answer_callback_query
-- id: '1538214792911'
-  alias: Telegram help
+- alias: Telegram help
   trigger:
-  - event_data:
-      command: /help
+    event_data:
+      command: '/help'
     event_type: telegram_command
     platform: event
-  condition: []
   action:
-  - data:
+  - service: telegram_bot.send_message
+    data:
       message: 'Cosa vuoi fare:'
       inline_keyboard:
       - Accendi Luce:/luce, Task 2:/command2
       - Task 3:/command3, Task 4:/command4
-    service: telegram_bot.send_message
