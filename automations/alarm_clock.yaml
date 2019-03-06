@@ -15,18 +15,18 @@
       state: 'on'
   action:
   - data:
-      transition: 300
-      brightness_pct: 100
+      transition: 100
+      brightness_pct: 50
       entity_id: light.living_room
     service: light.turn_on
   - service: media_player.volume_set
     data_template:
       entity_id: media_player.spotify
-      volume_level: 0.5
+      volume_level: 0.7
   - delay: 1
   - service: media_player.turn_on
     entity_id: media_player.spotify
-  - delay: 1
+  - delay: 10
   - data:
       entity_id: media_player.spotify
       source: Hass.io
@@ -36,3 +36,17 @@
       media_content_id: spotify:user:spotify:playlist:7g14mknoMzxzPcOyawOUgn
       media_content_type: playlist
     service: media_player.play_media
+
+- alias: Good Morning Alarm Off
+  trigger:
+    platform: event
+    event_type: xiaomi_aqara.click
+    event_data:
+      entity_id: binary_sensor.wall_switch_both_158d000237bb73
+      click_type: single
+  action:
+   - data:
+       gw_mac: XX:XX:XX:XX:XX
+     service: xiaomi_aqara.stop_ringtone
+   - service: media_player.turn_off
+     entity_id: media_player.spotify

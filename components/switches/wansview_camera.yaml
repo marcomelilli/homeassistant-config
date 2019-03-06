@@ -1,5 +1,16 @@
 - platform: command_line
   switches:
-    cam:
+    turn_cam:
       command_on: 'curl "http://XXXX:XXXXX@192.168.1.XXX:82/hy-cgi/ptz.cgi?cmd=preset&act=goto&status=1&number=1" --anyauth'
       command_off: 'curl "http://XXX:XXXXXX@192.168.1.XXX:82/hy-cgi/ptz.cgi?cmd=preset&act=goto&status=1&number=8" --anyauth'
+- platform: mqtt
+  name: "Camera Switch"
+  state_topic: "stat/camera/POWER"
+  command_topic: "cmnd/camera/POWER"
+  availability_topic: "tele/camera/LWT"
+  payload_available: "Online"
+  payload_not_available: "Offline"
+  payload_on: "ON"
+  payload_off: "OFF"
+  state_on: "ON"
+  state_off: "OFF"

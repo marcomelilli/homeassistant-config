@@ -17,6 +17,27 @@
       callback_query_id: '{{ trigger.event.data.id }}'
       message: Azione Completata
     service: telegram_bot.answer_callback_query
+
+- alias: Telegram Speaker Say
+  trigger:
+  - event_data:
+      command: /parla
+    event_type: telegram_command
+    platform: event
+  - event_data:
+      data: /parla
+    event_type: telegram_callback
+    platform: event
+  condition: []
+  action:
+  - service: snips.say
+    data_template:
+      text: '{% for state in trigger.event.data["args"] %} {{ state }} {% endfor %}'
+  - data_template:
+      callback_query_id: '{{ trigger.event.data.id }}'
+      message: Azione Completata
+    service: telegram_bot.answer_callback_query
+
 - alias: Telegram help
   trigger:
     event_data:
@@ -28,5 +49,36 @@
     data:
       message: 'Cosa vuoi fare:'
       inline_keyboard:
-      - Accendi Luce:/luce, Task 2:/command2
-      - Task 3:/command3, Task 4:/command4
+      - Accendi Luce:/luce, Aggiungi Spesa:/aggiungi_spesa
+      - Parla:/parla, Task 4:/command4
+      
+- alias: Telegram Disarm Alarm
+  trigger:
+    event_data:
+      command: /disarm_alarm
+    event_type: telegram_callback
+    platform: event
+  action:
+  - service: alarm_control_panel.alarm_disarm
+    entity_id: alarm_control_panel.home_alarm
+  - data_template:
+      callback_query_id: '{{ trigger.event.data.id }}'
+      message: Allarme disattivato
+    service: telegram_bot.answer_callback_query
+
+- alias: Telegram Trigger Sound Alarm
+  trigger:
+    event_data:
+      command: /alarm_sound
+    event_type: telegram_callback
+    platform: event
+  action:
+   - service: xiaomi_aqara.play_ringtone
+     data:
+       ringtone_id: 22
+       ringtone_vol: 11
+       gw_mac: XX:XX:XX:XX:XX
+   - data_template:
+       callback_query_id: '{{ trigger.event.data.id }}'
+       message: Suono allarme attivato!
+     service: telegram_bot.answer_callback_query

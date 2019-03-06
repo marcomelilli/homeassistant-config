@@ -1,7 +1,13 @@
-- id: '1537905242339'
-  platform: yeelight
+- platform: yeelight
   devices:
     192.168.1.114:
+      name: Corridor
+      transition: 300
+      model: color2
+      save_on_change: True
+- platform: yeelight
+  devices:
+    192.168.1.159:
       name: Living Room
       transition: 300
       model: color2

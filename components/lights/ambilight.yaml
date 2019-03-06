@@ -1,0 +1,44 @@
+- platform: mqtt
+  schema: template
+  name: "PC AmbiLight"
+  state_topic: "lights/pcambilight"
+  command_topic: "lights/pcambiligh/set"
+  effect_list:
+    - AmbiLight
+    - bpm
+    - candy cane  
+    - confetti  
+    - cyclon rainbow  
+    - dots  
+    - fire  
+    - glitter  
+    - juggle  
+    - lightning
+    - noise  
+    - police all  
+    - police one  
+    - rainbow  
+    - rainbow with glitter  
+    - ripple  
+    - sinelon 
+    - solid  
+    - twinkle  
+  command_on_template: >
+      {"state": "on"
+      {%- if brightness is defined -%}
+      , "brightness": {{ brightness }}
+      {%- endif -%}
+      {%- if red is defined and green is defined and blue is defined -%}
+      , "color": [{{ red }}, {{ green }}, {{ blue }}]
+      {%- endif -%}
+      {%- if effect is defined -%}
+      , "effect": "{{ effect }}"
+      {%- endif -%}
+      }
+  command_off_template: '{"state": "off"}'
+  state_template: '{{ value_json.state }}'
+  brightness_template: '{{ value_json.brightness }}'
+  red_template: '{{ value_json.color[0] }}'
+  green_template: '{{ value_json.color[1] }}'
+  blue_template: '{{ value_json.color[2] }}'
+  effect_template: '{{ value_json.effect }}'

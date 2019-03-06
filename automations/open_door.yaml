@@ -11,6 +11,6 @@
     state: 'off'
   action:
   - service: switch.turn_on
-  - data:
-      message: Home door opened
-    service: telegram_bot.send_message
+  #- data:
+  #   message: La porta di casa e' stata aperta
+  #  service: telegram_bot.send_message

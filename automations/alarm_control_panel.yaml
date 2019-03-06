@@ -1,0 +1,126 @@
+- alias: Trigger alarm while armed away
+  trigger:
+    - entity_id: binary_sensor.door_window_sensor_158d0001fa3516
+      from: 'off'
+      platform: state
+      to: 'on'
+    - entity_id: binary_sensor.motion_sensor_158d0001ae8bfa
+      from: 'off'
+      platform: state
+      to: 'on'
+  condition:
+    - condition: state
+      entity_id: alarm_control_panel.home_alarm
+      state: armed_away
+  action:
+    service: alarm_control_panel.alarm_trigger
+    entity_id: alarm_control_panel.home_alarm
+
+- alias: Trigger alarm while armed night
+  trigger:
+    - entity_id: binary_sensor.door_window_sensor_158d0001fa3516
+      from: 'off'
+      platform: state
+      to: 'on'
+  condition:
+    - condition: state
+      entity_id: alarm_control_panel.home_alarm
+      state: armed_night
+  action:
+    service: alarm_control_panel.alarm_trigger
+    entity_id: alarm_control_panel.home_alarm
+    
+- alias: Trigger sound and notification when alarm triggered
+  trigger:
+    - platform: state
+      entity_id: alarm_control_panel.home_alarm
+      to: 'triggered'
+  action:
+    - service: telegram_bot.send_message
+      data:
+        message: "ALARM! E' scattato l'allarme in casa"
+        inline_keyboard:
+          - "Disabilita:/disarm_alarm, Allarme:/alarm_sound"
+
+- alias: Trigger disarmed state
+  trigger:
+    - platform: state
+      entity_id: alarm_control_panel.home_alarm
+      to: 'disarmed'
+  action:
+    - service: switch.turn_off
+      entity_id: switch.turn_cam
+    - delay: 10
+    - service: switch.turn_off
+      entity_id: switch.camera_switch
+
+- alias: Trigger armed_away state
+  trigger:
+    - platform: state
+      entity_id: alarm_control_panel.home_alarm
+      to: 'armed_away'
+  action:
+    - service: switch.turn_on
+      entity_id: switch.camera_switch
+    - delay: 150
+    - service: switch.turn_on
+      entity_id: switch.turn_cam
+
+- alias: Arm Alarm Away
+  trigger:
+    - platform: event
+      event_type: xiaomi_aqara.click
+      event_data:
+        entity_id: binary_sensor.wall_switch_both_158d000237bb73
+        click_type: both
+  condition:
+    - condition: state
+      entity_id: alarm_control_panel.home_alarm
+      state: disarmed
+  action:
+    - service: alarm_control_panel.alarm_arm_away
+      entity_id: alarm_control_panel.home_alarm
+    - service: light.turn_on
+      entity_id: light.living_room
+    - service: light.yeelight_start_flow
+      data:
+        entity_id: light.living_room
+        count: 2
+        transitions: [{ "RGBTransition":[1500, 80, 0, 800, 30] }, { "RGBTransition": [1500, 80, 0, 1000, 100] }]
+    - delay: 4
+    - service: scene.turn_on
+      entity_id: scene.bye
+      
+
+- alias: Disarm Alarm
+  trigger:
+    - platform: event
+      event_type: xiaomi_aqara.click
+      event_data:
+        entity_id: binary_sensor.wall_switch_both_158d000237bb73
+        click_type: both
+  condition:
+    condition: or
+    conditions:
+      - condition: state
+        entity_id: alarm_control_panel.home_alarm
+        state: armed_away
+      - condition: state
+        entity_id: alarm_control_panel.home_alarm
+        state: armed_night
+      - condition: state
+        entity_id: alarm_control_panel.home_alarm
+        state: pending
+  action:
+    - service: alarm_control_panel.alarm_disarm
+      entity_id: alarm_control_panel.home_alarm
+    - service: light.turn_on
+      entity_id: light.living_room
+    - service: light.yeelight_start_flow
+      data:
+        entity_id: light.living_room
+        count: 2
+        transitions: [{ "RGBTransition": [900, 1500, 80, 800, 30] }, { "RGBTransition":[900, 1500, 80, 1000, 100] }]
+    - delay: 4
+    - service: light.turn_off
+      entity_id: light.living_room

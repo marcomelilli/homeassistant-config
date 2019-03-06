@@ -23,3 +23,21 @@
     service: media_player.media_play_pause
     data:
       entity_id: media_player.spotify
+
+############### Button ################
+- alias: Button - 
+  trigger:
+    - platform: event
+      event_type: xiaomi_aqara.click
+      event_data:
+        entity_id: binary_sensor.switch_158d000201c19c
+        click_type: single
+    - platform: event
+      event_type: xiaomi_aqara.click
+      event_data:
+        entity_id: binary_sensor.switch_158d000201c19c
+        click_type: hold
+  action:
+    service: media_player.media_play_pause
+    data:
+      entity_id: media_player.spotify

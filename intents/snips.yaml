@@ -7,13 +7,19 @@ TurnOn:
          {{ brightness|default('100') | float  }}
      entity_id: > 
        {%- if room.lower() in ['soggiorno'] -%}
-         light.xiaomi_power_strip
+         {%- if lightType.lower() in ['ceilinglight'] -%}
+           light.living_room
+         {%- elif lightType.lower() in ['floorlamp'] -%}
+           light.xiaomi_power_strip
+         {%- else -%}
+           light.living_room
+         {%- endif -%}
        {%- elif room.lower() in ['corridoio'] -%}
-         light.living_room
+         light.corridor
        {%- endif -%}
  speech:
    type: plain
-   text: OK, i turned on the light in {{ room }}
+   text: Ok, ho acceso la luce in {{ room }}
 
 TurnOff:
   action:
@@ -21,27 +27,33 @@ TurnOff:
       data_template:
         entity_id: > 
           {%- if room.lower() in ['soggiorno'] -%}
-            light.xiaomi_power_strip
+            {%- if lightType.lower() in ['ceilinglight'] -%}
+              light.living_room
+            {%- elif lightType.lower() in ['floorlamp'] -%}
+              light.xiaomi_power_strip
+            {%- else -%}
+              light.living_room
+            {%- endif -%}
           {%- elif room.lower() in ['corridoio'] -%}
-            light.living_room
+            light.corridor
           {%- endif -%}
   speech:
     type: plain
-    text: OK, i turned off the light in {{ room }}
+    text: OK, ho spento la luce in {{ room }}
 
 SetMode:
   action:
     service: scene.turn_on
     data_template:
       entity_id: > 
-        {%- if room.lower() in ['corridoio'] and mode.lower() in ['normale'] -%}
-          scene.corridoio_normal
-        {%- elif room.lower() in ['corridoio'] and mode.lower() in ['relax'] -%}
-          scene.corridoio_moonlight
+        {%- if room.lower() in ['soggiorno'] and mode.lower() in ['normale'] -%}
+          scene.livingroom_normal
+        {%- elif room.lower() in ['soggiorno'] and mode.lower() in ['relax'] -%}
+          scene.livingroom_moonlight
         {%- endif -%}
   speech:
     type: plain
-    text: OK, I set light in {{ room }} on {{ mode }} mode
+    text: OK, ho impostato la luce {{ mode }} in {{ room }}
     
 Goodnight:
   action:
@@ -50,7 +62,7 @@ Goodnight:
       entity_id: scene.goodnight
   speech:
     type: plain
-    text: Goodnight Marco
+    text: Buonanotte Marco
 
 Goodmorning:
   action:
@@ -59,7 +71,7 @@ Goodmorning:
       entity_id: scene.goodmorning
   speech:
     type: plain
-    text: Goodmorning Marco
+    text: Buongiorno Marco
 
 Hello:
   action:
@@ -68,7 +80,7 @@ Hello:
       entity_id: scene.hello
   speech:
     type: plain
-    text: Hello Marco
+    text: Ciao Marco, ben tornato a casa
     
 Bye:
   action:
@@ -77,7 +89,7 @@ Bye:
       entity_id: scene.bye
   speech:
     type: plain
-    text: See you soon Marco
+    text: Ciao Marco a presto!
     
 playPlaylist:
   action:
@@ -100,8 +112,8 @@ playPlaylist:
       entity_id: media_player.spotify
       media_content_type: playlist
       media_content_id: > 
-        {%- if playlist_name.lower() in ['preferita'] -%}
-          spotify:user:spotify:playlist:7g14mknoMzxzPcOyawOUgn
+        {%- if playlist_name == undefined -%}
+          spotify:user:spotify:playlist:37i9dQZF1DX6wfQutivYYr
         {%- elif playlist_name.lower() in ['top di oggi'] -%}
           spotify:user:spotify:playlist:37i9dQZF1DXcBWIGoYBM5M
         {%- elif playlist_name.lower() in ['top italia'] -%}
@@ -113,7 +125,7 @@ playPlaylist:
         {%- endif -%}
   speech:
     type: plain
-    text: OK, i'm playing the playlist {{ playlist_name }} on {{ media_player }}
+    text: Ok, metto la playlist {{ playlist_name }} in {{ media_player }}
 
 stopSpeaker:
   action:
@@ -134,3 +146,17 @@ previousSong:
   action:
   - service: media_player.media_previous_track
     entity_id: media_player.spotify
+
+SetAlarm:
+  action:
+  - service: input_number.set_value
+    data_template:
+      entity_id: input_number.alarm_hour
+      value: "{{ hour }}"
+  - service: input_number.set_value
+    data_template:
+      entity_id: input_number.alarm_minute
+      value: "{{ minute|default('0') | float }}"
+  speech:
+    type: plain
+    text: Ok, ho impostato la sveglia alle {{ hour }} e {{ minute }}

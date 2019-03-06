@@ -1,0 +1,13 @@
+- platform: manual
+  name: Home Alarm
+  pending_time: 20
+  delay_time: 0
+  trigger_time: 5
+  disarmed:
+    trigger_time: 0
+  armed_home:
+    pending_time: 0
+    delay_time: 0
+  armed_night:
+    pending_time: 0
+    delay_time: 0

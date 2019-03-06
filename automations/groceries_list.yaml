@@ -1,4 +1,4 @@
-- alias: Update Travel Destination options
+- alias: Groceries List
   trigger:
     - platform: state
       entity_id: input_text.wunderlist_groceries

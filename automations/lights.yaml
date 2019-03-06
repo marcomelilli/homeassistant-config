@@ -1,4 +1,17 @@
-- alias: Wall Switch Yeelight 1
+############### Wall Switch 1 ################
+- alias: Wall Switch 1 - Corridor
+  trigger:
+    platform: event
+    event_type: xiaomi_aqara.click
+    event_data:
+      entity_id: binary_sensor.wall_switch_left_158d000237bb73
+      click_type: single
+  action:
+  - data:
+      entity_id: light.xiaomi_power_strip
+    service: light.toggle
+
+- alias: Wall Switch 1 - LivingRoom
   trigger:
     platform: event
     event_type: xiaomi_aqara.click
@@ -10,18 +23,26 @@
       entity_id: light.living_room
     service: light.toggle
 
-- alias: Button Yeelight 1
+############### Wall Switch 2 ################
+- alias: Wall Switch 2 - LivingRoom
   trigger:
-    - platform: event
-      event_type: xiaomi_aqara.click
-      event_data:
-        entity_id: binary_sensor.switch_158d000201c19c
-        click_type: single
-    - platform: event
-      event_type: xiaomi_aqara.click
-      event_data:
-        entity_id: binary_sensor.switch_158d000201c19c
-        click_type: hold
+    platform: event
+    event_type: xiaomi_aqara.click
+    event_data:
+      entity_id: binary_sensor.wall_switch_left_158d000312d1ef
+      click_type: single
+  action:
+  - data:
+      entity_id: light.corridor
+    service: light.toggle
+
+- alias: Wall Switch 2 - Corridor
+  trigger:
+    platform: event
+    event_type: xiaomi_aqara.click
+    event_data:
+      entity_id: binary_sensor.wall_switch_right_158d000312d1ef
+      click_type: single
   action:
   - data:
       entity_id: light.living_room

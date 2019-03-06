@@ -8,6 +8,7 @@ homeassistant:
   customize: !include customize.yaml
 
 frontend:
+  themes: !include_dir_merge_named themes
 
 updater:
 
@@ -18,18 +19,15 @@ hassio:
 system_health:
 
 tts:
-  - platform: picotts
-    language: 'it-IT'
+  - platform: google
+    language: 'it'
+    base_url: https://xxxxxx.duckdns.org:8123
 
 panel_iframe:
-  configurator:
-    title: Configurator
+  ide:
+    title: IDE
     icon: mdi:wrench
-    url: https://192.168.1.XXX:3218
-  terminal:
-    title: Terminal
-    icon: mdi:application
-    url: https://192.168.1.XXX:7681
+    url: http://192.168.1.XXX:8321
   esp:
     title: Esp Config
     icon: mdi:application
@@ -80,6 +78,7 @@ telegram_bot:
     allowed_chat_ids:
       - !secret telegram_bot_chat_id
 
+
 input_text:
   wunderlist_groceries:
     name: Aggiungi a Lista Spesa
@@ -123,9 +122,17 @@ climate:
     target_sensor: sensor.temperature
     ac_mode: true
 
+fastdotcom:
+  scan_interval:
+    minutes: 180
+
+recorder:
+  purge_keep_days: 1
+
 snips:
 
 group: !include groups.yaml
+alarm_control_panel: !include_dir_merge_list components/alarm_control_panel
 sensor: !include_dir_merge_list components/sensors
 switch: !include_dir_merge_list components/switches
 light: !include_dir_merge_list components/lights
